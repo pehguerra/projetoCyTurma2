@@ -7,7 +7,7 @@ describe('CRUD - Posts', () => {
         cy.login(Cypress.env('email'), Cypress.env('password'))
     })
 
-    it('cria um post', () => {
+    it.only('cria um post', () => {
         
         cy.request({
             method: 'POST',
