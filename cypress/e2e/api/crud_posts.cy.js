@@ -4,20 +4,7 @@ describe('CRUD - Posts', () => {
     let mensagem = 'Este post foi feito pelo Cypress'
     
     before(() => {
-        
-        cy.request({
-            method: 'POST',
-            url: '/api/auth',
-            body: {
-                email: Cypress.env('email'),
-                password: Cypress.env('password2').toString()
-            }
-        }).then(() => {
-
-            Cypress.Cookies.defaults({
-                preserve: 'jwt'
-            })
-        })
+        cy.login(Cypress.env('email'), Cypress.env('password'))
     })
 
     it('cria um post', () => {

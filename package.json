@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^8.11.2",
     "cypress": "^11.1.0"
   },
   "devDependencies": {
