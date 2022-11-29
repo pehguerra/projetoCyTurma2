@@ -1,3 +1,6 @@
+import { testeContratoPOSTPosts } from '../../fixtures/schema-POST-posts'
+import { testeContratoGETPosts } from '../../fixtures/contratos/schema-GET-posts'
+
 describe('CRUD - Posts', () => {
 
     let postId = ''
@@ -7,7 +10,7 @@ describe('CRUD - Posts', () => {
         cy.login(Cypress.env('email'), Cypress.env('password'))
     })
 
-    it.only('cria um post', () => {
+    it('cria um post', () => {
         
         cy.request({
             method: 'POST',
@@ -19,6 +22,8 @@ describe('CRUD - Posts', () => {
             expect(status).to.eq(201)
             expect(body.text).to.eq(mensagem)
             postId = body._id
+
+            cy.testeContrato(testeContratoPOSTPosts, body)
         })
     })
 
@@ -31,6 +36,8 @@ describe('CRUD - Posts', () => {
             expect(status).to.eq(200)
             expect(body.text).to.eq(mensagem)
             expect(body.likes).to.have.lengthOf(0)
+
+            cy.testeContrato(testeContratoGETPosts, body)
         })
     })
 
