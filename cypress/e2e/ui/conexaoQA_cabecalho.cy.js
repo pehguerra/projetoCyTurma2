@@ -1,5 +1,13 @@
 describe('cabeçalho da página home', () => {
     
+    const validarMenu = (seletor, link, menu) => {
+
+        cy.getElement(seletor)
+            .should('have.attr', 'href', link)
+            .and('not.have.attr', 'target', '_blank')
+            .and('have.text', menu)
+    }
+
     context('não logado', () => {
         
         beforeEach(() => {
@@ -33,9 +41,68 @@ describe('cabeçalho da página home', () => {
                 .should('have.attr', 'href', '/login')
                 .and('not.have.attr', 'target', '_blank')
         })
-    })
 
+        it.skip('valida o cabeçalho utilizando object', () => {
+            
+            const menus = [
+                { seletor: 'navbar-conexaoQA', link: '/' },
+                { seletor: 'navbar-QAs', link: '/perfis' },
+                { seletor: 'navbar-about', link: '/sobre' },
+                { seletor: 'navbar-register', link: '/cadastrar' },
+                { seletor: 'navbar-login', link: '/login' }
+            ]
+
+            menus.forEach(({ seletor, link }) => {
+                
+                validarMenu(seletor, link)
+            })
+        })
+
+        ;[
+            { seletor: 'navbar-conexaoQA', link: '/', menu: ' ConexãoQA' },
+            { seletor: 'navbar-QAs', link: '/perfis', menu: 'QAs' },
+            { seletor: 'navbar-about', link: '/sobre', menu: 'Sobre' },
+            { seletor: 'navbar-register', link: '/cadastrar', menu: 'Cadastrar' },
+            { seletor: 'navbar-login', link: '/login', menu: 'Login' }
+        ].forEach(({ seletor, link, menu }) => {
+
+            it(`valida o menu ${menu} - Teste Dinâmico`, () => {
+                validarMenu(seletor, link, menu)
+            })
+        })
+    })
+    
     context('logado', () => {
         
+        // construindo meu estado
+        before(() => {
+            cy.login(Cypress.env('email'), Cypress.env('password'))
+        })
+
+        beforeEach(() => {
+            cy.visit('/')
+        })
+
+        after(() => {
+            Cypress.Cookies.defaults({
+                preserve: []
+            })
+        })
+
+        ;[
+            { seletor: 'navbar-conexaoQA', link: '/', menu: ' ConexãoQA' },
+            { seletor: 'navbar-QAs', link: '/perfis', menu: 'QAs' },
+            { seletor: 'navbar-posts', link: '/posts', menu: 'Posts' },
+            { seletor: 'navbar-dashboard', link: '/dashboard', menu: ' Dashboard' },
+            { seletor: 'navbar-about', link: '/sobre', menu: 'Sobre' },
+            { seletor: 'navbar-logout', link: '/', menu: ' Sair' },
+        ].forEach(({ seletor, link, menu }) => {
+
+            it(`valida o menu ${menu} - Teste Dinâmico`, () => {
+                
+                validarMenu(seletor, link, menu)
+            })
+        })
     })
+
 })
