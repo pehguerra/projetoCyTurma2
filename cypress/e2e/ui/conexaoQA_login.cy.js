@@ -6,6 +6,9 @@ describe('página de login', () => {
 
     it('faz o login válido', () => {
 
+        cy.intercept('GET', '/api/profile/me')
+            .as('apiLogin')
+
         // preenche o email
         cy.getElement('login-email')
             .type(Cypress.env('email'), { log: false, delay: 50 })
@@ -17,6 +20,10 @@ describe('página de login', () => {
         // clicar no login
         cy.getElement('login-submit')
             .click()
+            .wait('@apiLogin')
+            .then(({ response }) => {
+                expect(response.body.errors[0].msg).to.eq('Não há perfil para este usuário')
+            })
 
         // valida se o usuário está logado
         cy.getElement('dashboard-welcome')
