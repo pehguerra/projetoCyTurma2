@@ -1,6 +1,6 @@
 describe('alertas', () => {
     
-    it('valida o alerta de credencial inválida', () => {
+    it('valida o alerta de credencial inválida', { tags: ['@alerta', '@smoke'] }, () => {
         
         cy.clock()
 

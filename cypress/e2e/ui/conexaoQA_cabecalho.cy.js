@@ -14,7 +14,7 @@ describe('cabeçalho da página home', () => {
             cy.visit('/')
         })
 
-        it('valida o cabeçalho', () => {
+        it('valida o cabeçalho', { tags: '@flaky' }, () => {
             
             // Conexão QA
             cy.getElement('navbar-conexaoQA')
